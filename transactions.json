@@ -1,0 +1,57 @@
+[
+  {
+    "paidFrom": "vinamer",
+    "paidTo": [
+      "vinamer",
+      "akshit",
+      "sumeet",
+      "raghav"
+    ],
+    "totalAmount": 2000,
+    "cause": "Bookings Zostel"
+  },
+  {
+    "paidFrom": "raghav",
+    "paidTo": [
+      "akshit",
+      "sumeet",
+      "raghav"
+    ],
+    "totalAmount": 2000,
+    "cause": "petrol"
+  },
+  {
+    "paidFrom": "sumeet",
+    "paidTo": [
+      "akshit",
+      "sumeet"
+    ],
+    "totalAmount": 7000,
+    "cause": "jackets"
+  },
+  {
+    "paidFrom": "vinamer",
+    "paidTo": [
+      "vinamer",
+      "akshit"
+    ],
+    "totalAmount": 7200,
+    "cause": "shoes"
+  },
+  {
+    "paidFrom": "akshit",
+    "paidTo": [
+      "vinamer"
+    ],
+    "totalAmount": 4500,
+    "cause": "dummy"
+  },
+  {
+    "paidFrom": "akshit",
+    "paidTo": [
+      "raghav"
+    ],
+    "totalAmount": 800,
+    "cause": "dummy"
+  }
+]
