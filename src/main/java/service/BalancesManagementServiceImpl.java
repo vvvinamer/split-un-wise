@@ -15,7 +15,7 @@ import models.User;
 @Data
 public class BalancesManagementServiceImpl implements BalanceManagementService {
 
-  private Map<String, User> users = new HashMap<>();
+  public static Map<String, User> users = new HashMap<>();
 
   @Override
   public void processTransaction(Transaction transaction) {
@@ -42,7 +42,9 @@ public class BalancesManagementServiceImpl implements BalanceManagementService {
     List<Pair<User, Float>> currPathUsers = new ArrayList<>();
 
     //    this would re-computed from beginning
-    users.values().forEach(user -> user.setReducedAmountsLent(new HashMap<>(user.getAmountsLent())));
+    users
+        .values()
+        .forEach(user -> user.setReducedAmountsLent(new HashMap<>(user.getAmountsLent())));
 
     for (Map.Entry<String, User> user : users.entrySet()) {
       User currentUser = user.getValue();
@@ -117,51 +119,12 @@ public class BalancesManagementServiceImpl implements BalanceManagementService {
     float amountLent =
         paidByUser
             .getReducedAmountsLent()
-            .computeIfAbsent(
-                paidToUser,
-                key -> paidByUser.getAmountsLent().get(key));
+            .computeIfAbsent(paidToUser, key -> paidByUser.getAmountsLent().get(key));
     amountLent += amount;
     paidByUser.getReducedAmountsLent().put(paidToUser, amountLent);
   }
 
   private void borrowDummyAmount(User paidByUser, User paidToUser, float amount) {
     lendDummyAmount(paidToUser, paidByUser, amount * -1);
-  }
-
-  @Override
-  public void printBalances() {
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      System.out.println(entry.getKey() + "   Balances : " + entry.getValue().getAmountsLent());
-    }
-    System.out.println("---------------------------------------------");
-  }
-
-  @Override
-  public void printReducedBalances() {
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      System.out.println(
-          entry.getKey() + "   Balances : " + entry.getValue().getReducedAmountsLent());
-    }
-    System.out.println("---------------------------------------------");
-  }
-
-  @Override
-  public void printNetBalances() {
-
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      float netAmount =
-          entry.getValue().getAmountsLent().values().stream().reduce(Float::sum).get();
-      System.out.println(entry.getKey() + " : " + netAmount);
-    }
-
-    System.out.println("---------------------------------------------");
-
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      float netAmount =
-          entry.getValue().getReducedAmountsLent().values().stream().reduce(Float::sum).get();
-      System.out.println(entry.getKey() + " : " + netAmount);
-    }
-
-    System.out.println("---------------------------------------------");
   }
 }

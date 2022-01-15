@@ -7,6 +7,8 @@ import java.util.List;
 import models.Transaction;
 import service.BalanceManagementService;
 import service.BalancesManagementServiceImpl;
+import service.StatsService;
+import service.StatsServiceImpl;
 
 public class Main {
 
@@ -20,14 +22,17 @@ public class Main {
     List<Transaction> transactions =
         objectMapper.readValue(
             jsonArrayString.toString(), new TypeReference<List<Transaction>>() {});
+
     BalanceManagementService balanceManagementService = new BalancesManagementServiceImpl();
+    StatsService statsService = new StatsServiceImpl();
+
     for (Transaction transaction : transactions) {
       balanceManagementService.processTransaction(transaction);
     }
-    balanceManagementService.printBalances();
+    statsService.printBalances();
 
     balanceManagementService.reduceTransactions();
-    balanceManagementService.printReducedBalances();
-    balanceManagementService.printNetBalances();
+    statsService.printReducedBalances();
+    statsService.printNetBalances();
   }
 }
