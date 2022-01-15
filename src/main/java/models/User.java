@@ -23,6 +23,26 @@ public class User {
 
   private Map<User, Float> reducedAmountsLent;
 
+  public void lendAmount(User paidToUser, float amount) {
+    float amountLent = this.getAmountsLent().computeIfAbsent(paidToUser, key -> 0f);
+    amountLent += amount;
+    this.getAmountsLent().put(paidToUser, amountLent);
+  }
+
+  public void borrowAmount(User paidByUser, float amount) {
+    this.lendAmount(paidByUser, amount * -1);
+  }
+
+  public void lendDummyAmount(User paidToUser, float amount) {
+    float amountLent = this.getReducedAmountsLent().computeIfAbsent(paidToUser, key -> 0f);
+    amountLent += amount;
+    this.getReducedAmountsLent().put(paidToUser, amountLent);
+  }
+
+  public void borrowDummyAmount(User paidByUser, float amount) {
+    this.lendDummyAmount(paidByUser, amount * -1);
+  }
+
   @Override
   public String toString() {
     return this.name;

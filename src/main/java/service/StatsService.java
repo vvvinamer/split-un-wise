@@ -14,4 +14,8 @@ public interface StatsService {
   void printReducedBalances();
 
   void printNetBalances();
+
+  void printNetReducedBalances();
+
+  void printCycles();
 }

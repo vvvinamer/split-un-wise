@@ -1,8 +1,10 @@
 package service;
 
+import static service.BalancesManagementServiceImpl.cycles;
 import static service.BalancesManagementServiceImpl.users;
 
 import java.util.Map;
+import models.Cycle;
 import models.Transaction;
 import models.User;
 
@@ -45,13 +47,24 @@ public class StatsServiceImpl implements StatsService {
     }
 
     System.out.println("---------------------------------------------");
+  }
 
+  @Override
+  public void printNetReducedBalances() {
     for (Map.Entry<String, User> entry : users.entrySet()) {
       float netAmount =
           entry.getValue().getReducedAmountsLent().values().stream().reduce(Float::sum).get();
       System.out.println(entry.getKey() + " : " + netAmount);
     }
 
+    System.out.println("---------------------------------------------");
+  }
+
+  @Override
+  public void printCycles() {
+    for (Cycle cycle : cycles) {
+      System.out.println(cycle);
+    }
     System.out.println("---------------------------------------------");
   }
 }

@@ -30,9 +30,12 @@ public class Main {
       balanceManagementService.processTransaction(transaction);
     }
     statsService.printBalances();
+    statsService.printNetBalances();
 
     balanceManagementService.reduceTransactions();
+    statsService.printCycles();
+
     statsService.printReducedBalances();
-    statsService.printNetBalances();
+    statsService.printNetReducedBalances();
   }
 }
