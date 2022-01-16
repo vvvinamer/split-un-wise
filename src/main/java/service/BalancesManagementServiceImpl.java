@@ -35,10 +35,10 @@ public class BalancesManagementServiceImpl implements BalanceManagementService {
 
   @Override
   public void reduceTransactions() {
-
     findCycles();
     users.forEach((name, user) -> user.setReducedAmountsLent(new HashMap<>(user.getAmountsLent())));
     cycles.forEach(Cycle::performReductionIfApplicable);
+    users.forEach((name, user) -> user.remove0Balances());
   }
 
   private void findCycles() {
@@ -59,7 +59,6 @@ public class BalancesManagementServiceImpl implements BalanceManagementService {
   private void dfs(User currentUser, Set<User> visitedUsers, List<User> currPathUsers) {
 
     int cycleStartIndex = currPathUsers.indexOf(currentUser);
-
     if (cycleStartIndex != -1 && cycleStartIndex != currPathUsers.size() - 1) {
       cycles.add(
           new Cycle(new ArrayList<>(currPathUsers.subList(cycleStartIndex, currPathUsers.size()))));

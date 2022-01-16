@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import models.Transaction;
 import service.BalanceManagementService;
@@ -12,6 +13,8 @@ import service.StatsServiceImpl;
 
 public class Main {
 
+  public static List<Transaction> transactions = new ArrayList<>();
+
   public static void main(String[] args) throws IOException {
 
     //    TODO: should transactions be recorded somewhere as well?
@@ -19,9 +22,9 @@ public class Main {
     StringBuilder jsonArrayString = new StringBuilder();
     Files.lines(Paths.get("transactions.json")).forEach(jsonArrayString::append);
 
-    List<Transaction> transactions =
+    transactions.addAll(
         objectMapper.readValue(
-            jsonArrayString.toString(), new TypeReference<List<Transaction>>() {});
+            jsonArrayString.toString(), new TypeReference<List<Transaction>>() {}));
 
     BalanceManagementService balanceManagementService = new BalancesManagementServiceImpl();
     StatsService statsService = new StatsServiceImpl();

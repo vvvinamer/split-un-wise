@@ -14,7 +14,6 @@ public class User {
     this.amountsLent = new HashMap<>();
   }
 
-  //  functionality for getting cause as well.
   //  transactions could be stored and this could be stored in transactions
 
   private String name;
@@ -41,6 +40,11 @@ public class User {
 
   public void borrowDummyAmount(User paidByUser, float amount) {
     this.lendDummyAmount(paidByUser, amount * -1);
+  }
+
+  public void remove0Balances() {
+    amountsLent.entrySet().removeIf(entry -> entry.getValue() == 0f);
+    reducedAmountsLent.entrySet().removeIf(entry -> entry.getValue() == 0f);
   }
 
   @Override
