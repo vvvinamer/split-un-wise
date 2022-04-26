@@ -1,4 +1,4 @@
-package models;
+package split.models;
 
 import java.time.Instant;
 import java.util.List;

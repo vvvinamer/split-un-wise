@@ -1,4 +1,4 @@
-package models;
+package split.models;
 
 import java.util.HashMap;
 import java.util.Map;

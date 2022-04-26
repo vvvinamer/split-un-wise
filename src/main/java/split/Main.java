@@ -1,3 +1,5 @@
+package split;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -5,11 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import models.Transaction;
-import service.BalanceManagementService;
-import service.BalancesManagementServiceImpl;
-import service.StatsService;
-import service.StatsServiceImpl;
+import split.models.Transaction;
+import split.service.BalanceManagementService;
+import split.service.BalancesManagementServiceImpl;
+import split.service.StatsService;
+import split.service.StatsServiceImpl;
 
 public class Main {
 
@@ -32,13 +34,13 @@ public class Main {
     for (Transaction transaction : transactions) {
       balanceManagementService.processTransaction(transaction);
     }
-    statsService.printBalances();
+    statsService.getBalances();
     statsService.printNetBalances();
 
-    balanceManagementService.reduceTransactions();
+    balanceManagementService.simplifyBalances();
     statsService.printCycles();
 
-    statsService.printReducedBalances();
+    statsService.getReducedBalances();
     statsService.printNetReducedBalances();
   }
 }

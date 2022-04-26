@@ -1,4 +1,4 @@
-package service;
+package split.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,18 +7,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.Data;
-import models.Cycle;
-import models.Transaction;
-import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import split.models.Cycle;
+import split.models.Transaction;
+import split.models.User;
+import org.springframework.stereotype.Component;
 
 @Data
+@Component
 public class BalancesManagementServiceImpl implements BalanceManagementService {
 
-  public static Map<String, User> users = new HashMap<>();
-  public static List<Cycle> cycles = new ArrayList<>();
+  @Autowired
+  public Map<String, User> users;
+
+  @Autowired
+  public List<Cycle> cycles;
 
   @Override
-  public void processTransaction(Transaction transaction) {
+  public Transaction processTransaction(Transaction transaction) {
 
     User paidByUser = users.computeIfAbsent(transaction.getPaidFrom(), User::new);
     for (String userName : transaction.getPaidTo()) {
@@ -31,14 +37,17 @@ public class BalancesManagementServiceImpl implements BalanceManagementService {
       //         record that paidTo user borrowed money
       paidToUser.borrowAmount(paidByUser, amountPerHead);
     }
+    return transaction;
   }
 
   @Override
-  public void reduceTransactions() {
+  public List<Cycle> simplifyBalances() {
     findCycles();
+    if (cycles.isEmpty()) return null;
     users.forEach((name, user) -> user.setReducedAmountsLent(new HashMap<>(user.getAmountsLent())));
     cycles.forEach(Cycle::performReductionIfApplicable);
     users.forEach((name, user) -> user.remove0Balances());
+    return cycles;
   }
 
   private void findCycles() {

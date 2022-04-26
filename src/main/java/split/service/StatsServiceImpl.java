@@ -1,14 +1,24 @@
-package service;
+package split.service;
 
-import static service.BalancesManagementServiceImpl.cycles;
-import static service.BalancesManagementServiceImpl.users;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import models.Cycle;
-import models.Transaction;
-import models.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import split.models.Cycle;
+import split.models.Transaction;
+import split.models.User;
+import org.springframework.stereotype.Component;
+
+@Component
 public class StatsServiceImpl implements StatsService {
+
+  @Autowired
+  public Map<String, User> users;
+
+  @Autowired
+  public List<Cycle> cycles;
 
   @Override
   public User netGetAmountMax() {
@@ -21,20 +31,18 @@ public class StatsServiceImpl implements StatsService {
   }
 
   @Override
-  public void printBalances() {
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      System.out.println(entry.getKey() + "   Balances : " + entry.getValue().getAmountsLent());
-    }
-    System.out.println("---------------------------------------------");
+  public Map<String, Map<User, Float>> getBalances() {
+
+    Map<String, Map<User, Float>> balances = new HashMap<>();
+    users.forEach((key, value) -> balances.put(key, value.getAmountsLent()));
+    return balances;
   }
 
   @Override
-  public void printReducedBalances() {
-    for (Map.Entry<String, User> entry : users.entrySet()) {
-      System.out.println(
-          entry.getKey() + "   Balances : " + entry.getValue().getReducedAmountsLent());
-    }
-    System.out.println("---------------------------------------------");
+  public Map<String, Map<User, Float>> getReducedBalances() {
+    Map<String, Map<User, Float>> balances = new HashMap<>();
+    users.forEach((key, value) -> balances.put(key, value.getReducedAmountsLent()));
+    return balances;
   }
 
   @Override
